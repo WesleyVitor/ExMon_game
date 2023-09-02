@@ -39,9 +39,7 @@ defmodule ExMon do
     |> handle_status(move)
 
   end
-  @doc """
-    Verify the status of the game and make a move.
-  """
+
   defp handle_status(:game_over, _move), do: Status.print_round_message(Game.info())
   defp handle_status(_other, move) do
     move
@@ -51,9 +49,6 @@ defmodule ExMon do
     computer_move(Game.info)
   end
 
-  @doc """
-    Make a move by player or computer.
-  """
   defp do_move({:error, move}), do: Status.print_invalid_move_message(move)
   defp do_move({:ok, move}) do
     case move do
@@ -64,9 +59,6 @@ defmodule ExMon do
     Status.print_round_message(Game.info())
   end
 
-  @doc """
-    Make a move by computer.
-  """
   defp computer_move(%{turn: :computer, status: :continue}) do
     move = {:ok, Enum.random(@computer_moves)}
     do_move(move)
