@@ -8,10 +8,10 @@ defmodule ExMon do
   @doc """
     Create a player with a name and moves.
   """
-  @spec create_player(String.t, atom(), atom(), atom()) :: %ExMon.Player{
+  @spec create_player(String.t(), atom(), atom(), atom()) :: %ExMon.Player{
           life: 100,
           moves: %{move_avg: atom(), move_heal: atom(), move_rnd: atom()},
-          name: String.t
+          name: String.t()
         }
   def create_player(name, move_avg, move_rnd, move_heal) do
     Player.build(name, move_avg, move_rnd, move_heal)
@@ -37,22 +37,23 @@ defmodule ExMon do
     Game.info()
     |> Map.get(:status)
     |> handle_status(move)
-
   end
 
   defp handle_status(:game_over, _move), do: Status.print_round_message(Game.info())
+
   defp handle_status(_other, move) do
     move
     |> Actions.fetch_move()
     |> do_move()
 
-    computer_move(Game.info)
+    computer_move(Game.info())
   end
 
   defp do_move({:error, move}), do: Status.print_invalid_move_message(move)
+
   defp do_move({:ok, move}) do
     case move do
-      :move_heal -> Actions.heal
+      :move_heal -> Actions.heal()
       move -> Actions.attack(move)
     end
 
@@ -63,5 +64,6 @@ defmodule ExMon do
     move = {:ok, Enum.random(@computer_moves)}
     do_move(move)
   end
+
   defp computer_move(_), do: :ok
 end
